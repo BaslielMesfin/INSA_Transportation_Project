@@ -1,0 +1,22 @@
+### Register User   
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "name": "Basliel Mesfin",
+  "email": "baslielmesfin@gmail.com",
+  "password": "basliel",
+  "phone_number": "0980484531",
+  "role": "PASSENGER",
+  "company_id": null
+}
+
+
+### Login user
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "baslielmesfin@gmail.com",
+  "password": "basliel"
+}
