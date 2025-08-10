@@ -58,7 +58,7 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 
 | Component         | Technology              |
 |-------------------|-------------------------|
-| Mobile App        | Flutter / React Native  |
+| Mobile App        | Flutter   |
 | Web App           | React.js                |
 | Backend           | Node.js + Express       |
 | Database          | PostgreSQL              |
