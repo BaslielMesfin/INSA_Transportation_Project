@@ -8,7 +8,7 @@ The **Smart Public Transportation System** is a digital solution to improve Ethi
 - Transparent operations for multiple bus companies
 
 The system includes:
-- **Mobile App** (Flutter/React Native) for passengers
+- **Mobile App** (Flutter) for passengers
 - **Web Admin Dashboard** (React.js) for super admins and company admins
 - **Backend API** (Node.js + Express)
 - **Database** (PostgreSQL)
