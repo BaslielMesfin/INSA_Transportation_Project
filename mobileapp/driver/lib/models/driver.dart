@@ -43,4 +43,3 @@ class Driver {
         'averageRating': averageRating,
       };
 }
-
