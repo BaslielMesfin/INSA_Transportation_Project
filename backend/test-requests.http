@@ -20,3 +20,6 @@ Content-Type: application/json
   "email": "baslielmesfin@gmail.com",
   "password": "basliel"
 }
+
+
+GET http://localhost:3000/api/terminals

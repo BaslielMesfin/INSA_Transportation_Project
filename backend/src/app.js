@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const app = express();
 
@@ -9,6 +10,9 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.path} - Body:`, req.body);
   next();
 });
+
+const terminalRoutes = require('./routes/terminalRoutes');
+app.use('/api/terminals', terminalRoutes);
 
 // Import auth routes
 const authRoutes = require('./routes/authRoutes');
