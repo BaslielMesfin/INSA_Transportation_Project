@@ -1,0 +1,1312 @@
+/* src/index.css */
+
+/* ====== CSS Variables for Consistent Theming ====== */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --light-color: #ecf0f1;
+  --dark-color: #2c3e50;
+  --text-color: #333;
+  --text-light: #7f8c8d;
+  --border-color: #ddd;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.2);
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+}
+
+/* ====== Global Styles & Reset ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ====== Header Styles ====== */
+.header {
+  background: linear-gradient(135deg, var(--primary-color), #34495e);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header .logo h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.header nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 1rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.header nav a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.logout-btn {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info span {
+  margin-right: 1rem;
+  font-weight: 500;
+}
+
+.role-badge {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ====== Main Content ====== */
+.main-content {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+/* ====== Dashboard Layout ====== */
+.dashboard {
+  display: flex;
+  min-height: calc(100vh - 80px);
+}
+
+/* ====== Sidebar ====== */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, var(--primary-color), #2c3e50);
+  color: white;
+  padding: 1.5rem 0;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  overflow-y: auto;
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+}
+
+.sidebar h2 {
+  padding: 0 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 0.25rem;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 1.5rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: var(--secondary-color);
+  transform: scaleY(0);
+  transition: var(--transition);
+}
+
+.sidebar a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  padding-left: 2rem;
+}
+
+.sidebar a.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-weight: 600;
+}
+
+.sidebar a.active::before {
+  transform: scaleY(1);
+}
+
+/* ====== Dashboard Content ====== */
+.dashboard-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+/* ====== Content Header ====== */
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.content-header h1 {
+  margin: 0;
+  color: var(--dark-color);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* ====== Breadcrumbs ====== */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.breadcrumb-separator {
+  margin: 0 0.5rem;
+  color: var(--text-light);
+}
+
+.breadcrumbs a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.breadcrumbs a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* ====== Quick Navigation ====== */
+.quick-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.quick-nav span {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.quick-nav a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  background-color: rgba(52, 152, 219, 0.1);
+  transition: var(--transition);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.quick-nav a:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ====== Dashboard Cards ====== */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border-top: 4px solid var(--secondary-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card p {
+  font-size: 2.2rem;
+  margin: 0.5rem 0 0;
+  color: var(--dark-color);
+  font-weight: 700;
+}
+
+/* ====== Form Styles ====== */
+.form-container {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.form-container:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.form-container h2 {
+  margin-top: 0;
+  color: var(--dark-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: var(--transition);
+  background-color: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-group input {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.save-btn {
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.save-btn:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  background-color: var(--text-light);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.cancel-btn:hover {
+  background-color: #6c757d;
+  transform: translateY(-2px);
+}
+
+/* ====== Table Styles ====== */
+.table-container {
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.5rem;
+  transition: var(--transition);
+}
+
+.table-container:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: var(--dark-color);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+tr:hover {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* ====== Button Styles ====== */
+button {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background-color: var(--text-light);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-btn {
+  background-color: var(--success-color);
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-btn::before {
+  content: '+';
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.add-btn:hover {
+  background-color: #27ae60;
+}
+
+.edit-btn {
+  background-color: var(--warning-color);
+  margin-right: 0.5rem;
+}
+
+.edit-btn:hover {
+  background-color: #d68910;
+}
+
+.delete-btn {
+  background-color: var(--danger-color);
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.status-btn {
+  background-color: var(--warning-color);
+  margin-right: 0.5rem;
+}
+
+.status-btn:hover {
+  background-color: #d68910;
+}
+
+/* ====== Badge Styles ====== */
+.status-badge {
+  padding: 0.35rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.status-badge.active {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+}
+
+.status-badge.inactive {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: var(--danger-color);
+}
+
+.status-badge.maintenance {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: var(--warning-color);
+}
+
+.status-badge.on-leave {
+  background-color: rgba(52, 152, 219, 0.15);
+  color: var(--secondary-color);
+}
+
+.status-badge.scheduled {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+}
+
+.status-badge.in-transit {
+  background-color: rgba(52, 152, 219, 0.15);
+  color: var(--secondary-color);
+}
+
+.status-badge.completed {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+}
+
+.status-badge.cancelled {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: var(--danger-color);
+}
+
+.status-badge.pending {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: var(--warning-color);
+}
+
+.status-badge.completed {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+}
+
+.role-badge {
+  padding: 0.35rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.role-badge.admin {
+  background-color: rgba(52, 152, 219, 0.15);
+  color: var(--secondary-color);
+}
+
+.role-badge.superadmin {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+}
+
+.popularity-badge {
+  padding: 0.35rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.popularity-badge.high {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+}
+
+.popularity-badge.medium {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: var(--warning-color);
+}
+
+.popularity-badge.low {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: var(--danger-color);
+}
+
+/* ====== Login Styles ====== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  padding: 1rem;
+}
+
+.login-form {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-hover);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--dark-color);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: var(--transition);
+  margin-top: 1rem;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.forgot-password a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.registration-info {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(52, 152, 219, 0.1);
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--secondary-color);
+}
+
+.registration-info h3 {
+  margin-top: 0;
+  color: var(--dark-color);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.registration-info p {
+  margin: 0.5rem 0;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.demo-credentials {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--warning-color);
+}
+
+.demo-credentials p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.demo-credentials p:first-child {
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+}
+
+/* ====== Password Reset Styles ====== */
+.forgot-password-container,
+.reset-password-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  padding: 1rem;
+}
+
+.forgot-password-form,
+.reset-password-form {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-hover);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  overflow: hidden;
+}
+
+.forgot-password-form::before,
+.reset-password-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.forgot-password-form h2,
+.reset-password-form h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--dark-color);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.forgot-password-form p,
+.reset-password-form p {
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+
+.reset-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: var(--text-light);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.back-btn:hover {
+  background-color: #6c757d;
+  transform: translateY(-2px);
+}
+
+.message {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.message.success {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--success-color);
+ .message.error {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: var(--danger-color);
+}
+}
+
+.back-to-login {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.back-to-login a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.back-to-login a:hover {
+  text-decoration: underline;
+}
+
+/* ====== Password Strength Meter ====== */
+.password-strength-meter {
+  margin-top: 0.75rem;
+}
+
+.strength-bar {
+  height: 6px;
+  background-color: var(--light-color);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.strength-indicator {
+  height: 100%;
+  transition: var(--transition);
+  border-radius: 3px;
+}
+
+.strength-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.strength-label span:first-child {
+  font-weight: 600;
+}
+
+.password-feedback {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.password-feedback p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.password-feedback ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--danger-color);
+}
+
+.password-feedback li {
+  margin-bottom: 0.25rem;
+}
+
+.password-mismatch {
+  color: var(--danger-color);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* ====== Analytics Section ====== */
+.analytics-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.analytics-section:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.analytics-section h2 {
+  margin-top: 0;
+  color: var(--dark-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.system-health {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.health-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.health-item:hover {
+  background-color: #e9ecef;
+}
+
+.health-item span:first-child {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.status-healthy {
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+/* ====== Settings Styles ====== */
+.settings-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.settings-section {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.settings-section:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.settings-section h2 {
+  margin-top: 0;
+  color: var(--dark-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.change-password-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.change-password-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.system-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.info-item:hover {
+  background-color: #e9ecef;
+}
+
+.info-item span:first-child {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+/* ====== Registration Process ====== */
+.registration-process {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.registration-process:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.registration-process h1 {
+  margin-top: 0;
+  color: var(--dark-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.process-steps {
+  margin-bottom: 2rem;
+}
+
+.step {
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--secondary-color);
+  border-radius: 2px;
+}
+
+.step h3 {
+  margin-top: 0;
+  color: var(--dark-color);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.notes {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--secondary-color);
+}
+
+.notes h3 {
+  margin-top: 0;
+  color: var(--dark-color);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.notes ul {
+  padding-left: 1.5rem;
+}
+
+.notes li {
+  margin-bottom: 0.5rem;
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 1200px) {
+  .dashboard-cards {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .header nav {
+    margin: 1rem 0;
+  }
+  
+  .user-info {
+    margin-top: 1rem;
+  }
+  
+  .dashboard {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    padding: 1rem 0;
+    height: auto;
+    position: static;
+  }
+  
+  .sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .sidebar li {
+    margin: 0.25rem;
+  }
+  
+  .sidebar a {
+    padding: 0.5rem 1rem;
+  }
+  
+  .sidebar h2 {
+    text-align: center;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .system-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .system-health {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .quick-nav {
+    flex-wrap: wrap;
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions button {
+    width: 100%;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 600px;
+  }
+  
+  .settings-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .login-form,
+  .forgot-password-form,
+  .reset-password-form {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .header .logo h1 {
+    font-size: 1.5rem;
+  }
+  
+  .header nav a {
+    margin: 0 0.5rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .user-info {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .main-content {
+    padding: 1rem;
+  }
+  
+  .dashboard-content {
+    padding: 1rem;
+  }
+  
+  .card {
+    padding: 1.25rem;
+  }
+  
+  .card p {
+    font-size: 1.8rem;
+  }
+  
+  .form-container {
+    padding: 1.5rem;
+  }
+  
+  .form-container h2 {
+    font-size: 1.3rem;
+  }
+  
+  th, td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .registration-process {
+    padding: 1.5rem;
+  }
+  
+  .registration-process h1 {
+    font-size: 1.5rem;
+  }
+}
