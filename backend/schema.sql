@@ -22,7 +22,7 @@ CREATE TABLE users (
     company_id UUID REFERENCES companies(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    refresh_token TEXT;
+    refresh_token TEXT
 );
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -95,3 +95,64 @@ CREATE TABLE IF NOT EXISTS bus_locations (
 );
 
 CREATE INDEX IF NOT EXISTS idx_bus_locations_bus_time ON bus_locations (bus_id, recorded_at DESC);
+
+
+
+
+-- insert data
+
+
+-- ========================
+-- Sample Terminals
+-- ========================
+INSERT INTO terminals (id, name, latitude, longitude) VALUES
+(gen_random_uuid(), 'Bole', 9.009000, 38.761000),
+(gen_random_uuid(), 'Piassa', 9.005000, 38.745000),
+(gen_random_uuid(), 'Mexico', 9.013000, 38.750000),
+(gen_random_uuid(), 'Tuludimtu', 9.020000, 38.765000),
+(gen_random_uuid(), 'Megenagna', 9.025000, 38.780000);
+
+-- ========================
+-- Sample Companies
+-- ========================
+INSERT INTO companies (id, name, registration_no, address) VALUES
+(gen_random_uuid(), 'BlueBus Co.', 'BB123', 'Addis Ababa'),
+(gen_random_uuid(), 'GreenLine Transport', 'GL456', 'Addis Ababa');
+
+-- ========================
+-- Sample Users (Drivers)
+-- ========================
+INSERT INTO users (name, email, password_hash, phone_number, role, company_id) VALUES
+('Driver One', 'driver1@example.com', 'hashed_pw', '+251911000001', 'DRIVER', (SELECT id FROM companies LIMIT 1 OFFSET 0)),
+('Driver Two', 'driver2@example.com', 'hashed_pw', '+251911000002', 'DRIVER', (SELECT id FROM companies LIMIT 1 OFFSET 0)),
+('Driver Three', 'driver3@example.com', 'hashed_pw', '+251911000003', 'DRIVER', (SELECT id FROM companies LIMIT 1 OFFSET 1));
+
+-- ========================
+-- Sample Buses
+-- ========================
+INSERT INTO buses (id, company_id, plate_number, capacity, driver_id, status) VALUES
+(gen_random_uuid(), (SELECT id FROM companies LIMIT 1 OFFSET 0), 'BB-001', 50, 1, 'ACTIVE'),
+(gen_random_uuid(), (SELECT id FROM companies LIMIT 1 OFFSET 0), 'BB-002', 40, 2, 'ACTIVE'),
+(gen_random_uuid(), (SELECT id FROM companies LIMIT 1 OFFSET 1), 'GL-101', 60, 3, 'ACTIVE');
+
+-- ========================
+-- Sample Routes
+-- ========================
+INSERT INTO routes (id, company_id, name, start_terminal_id, end_terminal_id, distance_km, estimated_time) VALUES
+(gen_random_uuid(), (SELECT id FROM companies LIMIT 1 OFFSET 0), 'Line 1: Bole → Piassa', 
+ (SELECT id FROM terminals WHERE name='Bole'), 
+ (SELECT id FROM terminals WHERE name='Piassa'), 5.2, '00:15:00'),
+(gen_random_uuid(), (SELECT id FROM companies LIMIT 1 OFFSET 0), 'Line 2: Piassa → Mexico', 
+ (SELECT id FROM terminals WHERE name='Piassa'), 
+ (SELECT id FROM terminals WHERE name='Mexico'), 6.0, '00:18:00'),
+(gen_random_uuid(), (SELECT id FROM companies LIMIT 1 OFFSET 1), 'Line 3: Tuludimtu → Megenagna', 
+ (SELECT id FROM terminals WHERE name='Tuludimtu'), 
+ (SELECT id FROM terminals WHERE name='Megenagna'), 7.5, '00:22:00');
+
+-- ========================
+-- Sample Bus Locations
+-- ========================
+INSERT INTO bus_locations (bus_id, latitude, longitude, recorded_at) VALUES
+((SELECT id FROM buses WHERE plate_number='BB-001'), 9.010000, 38.762000, NOW()),
+((SELECT id FROM buses WHERE plate_number='BB-002'), 9.006500, 38.746000, NOW()),
+((SELECT id FROM buses WHERE plate_number='GL-101'), 9.021000, 38.776000, NOW());
