@@ -17,7 +17,7 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Login to Bus Transport System</h2>
+        <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>

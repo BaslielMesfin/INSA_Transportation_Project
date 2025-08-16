@@ -44,6 +44,7 @@ function AppRoutes() {
           </Route>
           
           <Route path="/superadmin" element={<SuperAdminDashboard />}>
+            <Route path="bus-tracking" element={<SuperAdminDashboard section="bus-tracking" />} />
             <Route path="companies" element={<SuperAdminDashboard section="companies" />} />
             <Route path="users" element={<SuperAdminDashboard section="users" />} />
             <Route path="registration-process" element={<SuperAdminDashboard section="registration-process" />} />

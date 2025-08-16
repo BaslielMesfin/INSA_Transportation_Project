@@ -1,8 +1,7 @@
 // src/components/superadmin/CompanyManagement.js
 import React, { useState, useEffect } from 'react';
 
-function CompanyManagement() {
-  const [companies, setCompanies] = useState([]);
+function CompanyManagement({ companies, setCompanies }) {
   const [showForm, setShowForm] = useState(false);
   const [editingCompany, setEditingCompany] = useState(null);
   const [formData, setFormData] = useState({
@@ -10,46 +9,10 @@ function CompanyManagement() {
     email: '',
     phone: '',
     address: '',
-    registrationStatus: 'Pending', // New field
+    registrationStatus: 'Pending',
     registrationDate: new Date().toISOString().split('T')[0],
     status: 'Active'
   });
-
-  useEffect(() => {
-    // Sample companies with registration status
-    setCompanies([
-      { 
-        id: 1, 
-        name: 'City Bus Lines', 
-        email: 'contact@citybus.com', 
-        phone: '555-1234', 
-        address: '123 Main St', 
-        registrationStatus: 'Completed',
-        registrationDate: '2023-01-15',
-        status: 'Active' 
-      },
-      { 
-        id: 2, 
-        name: 'Metro Transport', 
-        email: 'info@metro.com', 
-        phone: '555-5678', 
-        address: '456 Oak Ave', 
-        registrationStatus: 'Completed',
-        registrationDate: '2023-02-20',
-        status: 'Active' 
-      },
-      { 
-        id: 3, 
-        name: 'Express Coaches', 
-        email: 'support@express.com', 
-        phone: '555-9012', 
-        address: '789 Pine Rd', 
-        registrationStatus: 'Pending',
-        registrationDate: '2023-03-10',
-        status: 'Inactive' 
-      },
-    ]);
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -61,18 +24,44 @@ function CompanyManagement() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Create a notification for the user
+    const notificationTitle = editingCompany ? 'Company Updated' : 'Company Registered';
+    const notificationMessage = editingCompany 
+      ? `${formData.name} has information has been updated successfully.`
+      : `${formData.name} company has been registered successfully and is now available for bus tracking.`;
+    
+    // Show browser notification
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          new Notification(notificationTitle, {
+            body: notificationMessage,
+            icon: 'https://cdn-icons-png.flaticon.com/512/344/344439.png'
+          });
+        }
+      });
+    }
+    
+    // Update companies state
     if (editingCompany) {
       setCompanies(companies.map(company => 
         company.id === editingCompany.id ? { ...formData, id: editingCompany.id } : company
       ));
       setEditingCompany(null);
+         // Show success message
+      alert(`${formData.name} company information updated successfully!`);
     } else {
       const newCompany = {
         ...formData,
         id: companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1
       };
       setCompanies([...companies, newCompany]);
+      
+      // Show success message
+      alert(`${formData.name} company registered successfully! It is now available for bus tracking.`);
     }
+    
     resetForm();
   };
 
@@ -91,13 +80,22 @@ function CompanyManagement() {
   };
 
   const handleDelete = (id) => {
-    setCompanies(companies.filter(company => company.id !== id));
+    const companyToDelete = companies.find(c => c.id === id);
+    if (window.confirm(`Are you sure you want to delete ${companyToDelete.name}? This will also remove all associated buses from tracking.`)) {
+      setCompanies(companies.filter(company => company.id !== id));
+      alert(`${companyToDelete.name} company deleted successfully!`);
+    }
   };
 
   const updateRegistrationStatus = (id, status) => {
+    const company = companies.find(c => c.id === id);
+    const newStatus = status === 'Completed' ? 'completed' : 'pending';
+    
     setCompanies(companies.map(company => 
       company.id === id ? { ...company, registrationStatus: status } : company
     ));
+    
+    alert(`${company.name} registration status updated to ${newStatus}!`);
   };
 
   const resetForm = () => {
