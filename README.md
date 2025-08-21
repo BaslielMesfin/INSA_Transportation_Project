@@ -1,6 +1,5 @@
-Absolutely! I’ve reformatted your README so that **all code blocks, tables, and lists render correctly on GitHub**. Here’s the cleaned-up full version:
 
-```markdown
+```
 # 🚍 Smart Public Transportation System (Ethiopia)
 
 ## 📌 Overview
