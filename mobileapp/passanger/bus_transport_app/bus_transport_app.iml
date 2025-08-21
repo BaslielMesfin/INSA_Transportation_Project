@@ -1,0 +1,26 @@
+name: bus_transport_app
+description: Real-time bus transportation system
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_maps_flutter: ^2.0.6  # Using a stable version compatible with Flutter 2.x
+  location: ^4.3.0
+  http: ^0.13.3
+  provider: ^5.0.0
+  flutter_rating_bar: ^3.0.1
+  intl: ^0.17.0
+  cached_network_image: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
