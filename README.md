@@ -67,24 +67,20 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 
 ---
 
-## 📂 Project Structure /smart-transport-system
+## 📂 Project Structure 
+INSA_Transportation_Project/
 │
-├── backend/ # Node.js backend API
-│ ├── src/
-│ ├── package.json
+├── backend/        # Node.js backend API
+│   ├── src/
+│   └── package.json
 │
-├── mobile-app/ # Flutter or React Native passenger app
-│ ├── src/
+├── frontend/       # React.js frontend for superadmin
+│   └── src/
 │
-├── admin-dashboard/ # React.js admin panel
-│ ├── src/
+├── mobileapp/      # Flutter or React Native passenger app
+│   └── src/
 │
 └── README.md
-
-yaml
-Copy
-Edit
-
 ---
 
 ## 👥 User Roles
@@ -95,49 +91,48 @@ Edit
 
 ---
 
-## 🚀 Getting Started
-
-### 1️⃣ Clone the Repository
-```bash
+## 🚀Getting Started
+1️⃣ Clone the Repository
 git clone https://github.com/your-org/smart-transport-system.git
 cd smart-transport-system
+
 2️⃣ Backend Setup
-bash
-Copy
-Edit
 cd backend
 npm install
-cp .env.example .env   # Add DB & API keys
+cp .env.example .env   # Add your DB credentials & API keys
 npm run dev
+
 3️⃣ Mobile App Setup
-bash
-Copy
-Edit
-cd mobile-app
-# React Native
+
+React Native
+
+cd mobileapp
 npm install
 npm start
-# OR Flutter
+
+
+Flutter
+
+cd mobileapp
 flutter pub get
 flutter run
-4️⃣ Admin Dashboard Setup
-bash
-Copy
-Edit
-cd admin-dashboard
+
+4️⃣ Frontend (Superadmin) Setup
+cd frontend
 npm install
 npm start
-🔒 Environment Variables
-Create a .env file in /backend with:
 
-ini
-Copy
-Edit
+🔒 Environment Variables
+
+Create a .env file in /backend with the following:
+
 PORT=5000
 DATABASE_URL=postgresql://username:password@localhost:5432/transport
 JWT_SECRET=your_jwt_secret
 MAPS_API_KEY=your_google_maps_api_key
-📅 Development Workflow (Group Project)
+
+evelopment Workflow (Group Project)
+
 Branching Model
 
 main → Stable branch
@@ -148,24 +143,22 @@ feature/<feature-name> → Individual feature branches
 
 Contribution Process
 
-bash
-Copy
-Edit
 git checkout dev
 git pull origin dev
 git checkout -b feature/add-eta
-# Work on feature
+# Work on your feature
 git commit -m "Added ETA calculation"
 git push origin feature/add-eta
-Open Pull Request → Merge after review
+
+
+Open a Pull Request → Merge after review.
 
 Task Management
 
-Use GitHub Projects or Issues to assign and track tasks
+Use GitHub Projects or Issues to assign and track tasks.
 
 📊 Future Enhancements
+
 Taxi & ride-sharing integration
 
 AI demand prediction for routes
-
-Offline mode for low network areas
