@@ -75,25 +75,16 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 
 ## 📂 Project Structure
 
-
-
-```
-
 smart-transport-system/
-│
 ├── backend/        # Node.js backend API
 │   ├── src/
 │   └── package.json
-│
 ├── frontend/       # React.js frontend for superadmin
 │   └── src/
-│
 ├── mobileapp/      # Flutter or React Native passenger app
 │   └── src/
-│
 └── README.md
 
-````
 
 ---
 
@@ -195,8 +186,3 @@ Open a Pull Request → Merge after review.
 * Taxi & ride-sharing integration
 * AI demand prediction for routes
 
-```
-
----
-
-```
