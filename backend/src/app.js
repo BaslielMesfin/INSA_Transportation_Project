@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const app = express();
 
@@ -14,7 +14,9 @@ app.use((req, res, next) => {
 const terminalRoutes = require('./routes/terminalRoutes');
 app.use('/api/terminals', terminalRoutes);
 
-// Import auth routes
+const busRoutes = require('./routes/busesRoutes'); // <-- add this line
+app.use('/api/buses', busRoutes);                // <-- add this line
+
 const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
