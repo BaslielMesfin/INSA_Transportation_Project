@@ -1,5 +1,3 @@
-
-```markdown
 # 🚍 Smart Public Transportation System (Ethiopia)
 
 ## 📌 Overview
@@ -43,18 +41,18 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 
 ### Admin Dashboard
 
-#### **Super Admin (Transport Minister)**
+#### Super Admin (Transport Minister)
 - Manage and monitor all bus companies  
 - Approve or reject company registrations  
 - Access system-wide analytics  
 
-#### **Admin (Bus Company Manager)**
+#### Admin (Bus Company Manager)
 - Add/remove buses  
 - Assign drivers  
 - Monitor real-time bus operations  
 - Review passenger feedback  
 
-#### **Driver**
+#### Driver
 - Update bus status and capacity  
 - Share location data in real time  
 
@@ -69,7 +67,7 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 | Backend         | Node.js + Express           |
 | Database        | PostgreSQL                  |
 | Auth            | JWT Authentication          |
-| Maps & Tracking | Gebeta Maps |
+| Maps & Tracking | Google Maps API / OpenStreetMap |
 
 ---
 
