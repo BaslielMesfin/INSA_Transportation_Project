@@ -1,0 +1,23 @@
+name: bus_transport_app
+description: Real-time bus transportation system
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^5.0.0
+  intl: ^0.17.0
+  flutter_map: ^5.0.0
+  latlong2: 0.9.1  # Make sure this is present and correctly formatted
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  
