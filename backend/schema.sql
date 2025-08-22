@@ -81,7 +81,8 @@ CREATE TABLE IF NOT EXISTS routes (
     distance_km DECIMAL(6,2),              -- optional
     estimated_time INTERVAL,               -- optional
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE;
 );
 
 

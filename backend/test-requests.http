@@ -23,3 +23,149 @@ Content-Type: application/json
 
 
 GET http://localhost:3000/api/terminals
+
+
+### Get all active buses
+GET http://localhost:3000/api/buses/all
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+###
+
+### Search buses by route
+GET http://localhost:3000/api/buses/search?start_terminal_name=Main%20Terminal&end_terminal_name=Stadium&user_lat=9.0123&user_lng=38.7654&radius_km=5
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+###
+
+### Get all terminals
+GET http://localhost:3000/api/terminals
+Content-Type: application/json
+
+
+### 2. Get bus info
+GET http://localhost:3000/api/bus/6d575aa5-e24d-4af0-8589-9c5d3be3d7b5/info
+Authorization: Bearer {{TOKEN}}
+
+### 3. Submit feedback
+POST http://localhost:3000/api/bus/6d575aa5-e24d-4af0-8589-9c5d3be3d7b5/feedback
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "rating": 5,
+  "comment": "Great ride!"
+}
+
+### 4. Get feedback + average rating
+GET http://localhost:3000/api/bus/6d575aa5-e24d-4af0-8589-9c5d3be3d7b5/feedback
+Authorization: Bearer {{TOKEN}}
+
+
+
+### 1. Add a new bus
+POST http://localhost:3000/api/admin/buses
+Content-Type: application/json
+Authorization: Bearer {{ADMIN_TOKEN}}
+
+{
+  "plateNumber": "SP-103-CC",
+  "capacity": 45
+}
+
+### 2. Assign a driver to a bus
+PATCH http://localhost:3000/api/admin/buses/{{BUS_ID}}/assign-driver
+Content-Type: application/json
+Authorization: Bearer {{ADMIN_TOKEN}}
+
+{
+  "driverId": {{DRIVER_ID}}
+}
+
+### 3. Remove a bus
+DELETE http://localhost:3000/api/admin/buses/{{BUS_ID}}
+Authorization: Bearer {{ADMIN_TOKEN}}
+
+### 4. View feedback for a bus
+GET http://localhost:3000/api/admin/buses/{{BUS_ID}}/feedback
+Authorization: Bearer {{ADMIN_TOKEN}}
+
+### 5. Update a bus
+PATCH http://localhost:3000/api/admin/buses/<BUS_ID>
+Content-Type: application/json
+Authorization: Bearer <ADMIN_TOKEN>
+
+{
+  "plateNumber": "SP-104-UPDATED",
+  "capacity": 45,
+  "status": "ACTIVE"
+}
+
+
+
+### 1. Add a new route
+POST http://localhost:3000/api/admin/routes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Main → East Express",
+  "startTerminalId": "df812e90-8b0c-4c2a-8e93-f8ecb0ac5200",
+  "endTerminalId": "73f1fbe4-5942-4c8e167e45ea",
+  "distanceKm": 15.2,
+  "estimatedTime": "00:30:00"
+}
+
+###
+
+### 2. Get all routes
+GET http://localhost:3000/api/admin/routes
+Authorization: Bearer {{token}}
+
+###
+
+### 3. Update an existing route
+PATCH http://localhost:3000/api/admin/routes/{{routeId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Main → East Local",
+  "distanceKm": 14.0,
+  "estimatedTime": "00:35:00"
+}
+
+###
+
+### 4. Delete a route
+DELETE http://localhost:3000/api/admin/routes/{{routeId}}
+Authorization: Bearer {{token}}
+
+
+### 1️⃣ Create Hail (Passenger)
+POST http://localhost:3000/api/bus-hails
+Content-Type: application/json
+Authorization: Bearer {{PASSENGER_TOKEN}}
+
+{
+  "terminalLocation": "Main Terminal",
+  "routeId": "{{ROUTE_ID}}" 
+}
+
+### 2️⃣ Passenger: View My Hails
+GET http://localhost:3000/api/bus-hails/my
+Authorization: Bearer {{PASSENGER_TOKEN}}
+
+### 3️⃣ Admin: View Pending Hails
+GET http://localhost:3000/api/bus-hails/pending
+Authorization: Bearer {{ADMIN_TOKEN}}
+
+### 4️⃣ Admin: Assign Bus to Hail
+PATCH http://localhost:3000/api/bus-hails/{{HAIL_ID}}/assign
+Content-Type: application/json
+Authorization: Bearer {{ADMIN_TOKEN}}
+
+{
+  "busId": "{{BUS_ID}}"
+}
