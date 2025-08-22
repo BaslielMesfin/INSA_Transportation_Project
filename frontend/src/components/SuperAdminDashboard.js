@@ -1,4 +1,3 @@
-// src/components/SuperAdminDashboard.js
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import CompanyManagement from './superadmin/CompanyManagement';
@@ -7,6 +6,7 @@ import UserManagement from './superadmin/UserManagement';
 import SystemSettings from './superadmin/SystemSettings';
 import RegistrationProcess from './superadmin/RegistrationProcess';
 import BusTracking from './superadmin/BusTracking';
+import RouteMapping from './superadmin/RouteMapping';
 
 const Breadcrumbs = ({ section }) => {
   const getBreadcrumbs = () => {
@@ -43,7 +43,7 @@ const Breadcrumbs = ({ section }) => {
 
 function SuperAdminDashboard({ section = 'home' }) {
   const location = useLocation();
-  const [activeSection, setActiveSection] = useState(section); // Fixed: removed extra comma
+  const [activeSection, setActiveSection] = useState(section);
   const [companies, setCompanies] = useState([]);
   const [buses, setBuses] = useState([]);
 
@@ -173,6 +173,8 @@ function SuperAdminDashboard({ section = 'home' }) {
         return <RegistrationProcess />;
       case 'bus-tracking':
         return <BusTracking companies={companies} buses={buses} />;
+      case 'route-mapping':
+        return <RouteMapping companies={companies} />;
       case 'analytics':
         return <SystemAnalytics />;
       case 'settings':
@@ -211,6 +213,14 @@ function SuperAdminDashboard({ section = 'home' }) {
                 className={({ isActive }) => isActive ? "active" : ""}
               >
                 SuperAdmin Account Management
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/superadmin/route-mapping" 
+                className={({ isActive }) => isActive ? "active" : ""}
+              >
+                Route Mapping
               </NavLink>
             </li>
             <li>
@@ -257,6 +267,7 @@ function SuperAdminDashboard({ section = 'home' }) {
               {activeSection === 'home' && 'Super Admin Dashboard'}
               {activeSection === 'companies' && 'Company Management'}
               {activeSection === 'users' && 'SuperAdmin Account Management'}
+              {activeSection === 'route-mapping' && 'Route - Company Mapping'}
               {activeSection === 'bus-tracking' && 'Real-time Bus Tracking'}
               {activeSection === 'registration-process' && 'Registration Process'}
               {activeSection === 'analytics' && 'System Analytics'}
@@ -268,6 +279,7 @@ function SuperAdminDashboard({ section = 'home' }) {
             <span>Quick Navigation:</span>
             <NavLink to="/superadmin/companies">Companies</NavLink>
             <NavLink to="/superadmin/users">Accounts</NavLink>
+            <NavLink to="/superadmin/route-mapping">Route Mapping</NavLink>
             <NavLink to="/superadmin/bus-tracking">Bus Tracking</NavLink>
             <NavLink to="/superadmin/analytics">Analytics</NavLink>
             <NavLink to="/superadmin/settings">Settings</NavLink>
@@ -314,6 +326,9 @@ function DashboardHome() {
           </NavLink>
           <NavLink to="/superadmin/users" className="action-btn">
             Manage Admins
+          </NavLink>
+          <NavLink to="/superadmin/route-mapping" className="action-btn">
+            Route Mapping
           </NavLink>
           <NavLink to="/superadmin/bus-tracking" className="action-btn">
             Track Buses

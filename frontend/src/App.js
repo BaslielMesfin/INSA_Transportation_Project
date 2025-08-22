@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
@@ -35,24 +34,8 @@ function AppRoutes() {
       
       {user ? (
         <>
-          <Route path="/admin" element={<AdminDashboard />}>
-            <Route path="buses" element={<AdminDashboard section="buses" />} />
-            <Route path="routes" element={<AdminDashboard section="routes" />} />
-            <Route path="drivers" element={<AdminDashboard section="drivers" />} />
-            <Route path="schedules" element={<AdminDashboard section="schedules" />} />
-            <Route path="" element={<AdminDashboard section="home" />} />
-          </Route>
-          
-          <Route path="/superadmin" element={<SuperAdminDashboard />}>
-            <Route path="bus-tracking" element={<SuperAdminDashboard section="bus-tracking" />} />
-            <Route path="companies" element={<SuperAdminDashboard section="companies" />} />
-            <Route path="users" element={<SuperAdminDashboard section="users" />} />
-            <Route path="registration-process" element={<SuperAdminDashboard section="registration-process" />} />
-            <Route path="analytics" element={<SuperAdminDashboard section="analytics" />} />
-            <Route path="settings" element={<SuperAdminDashboard section="settings" />} />
-            <Route path="" element={<SuperAdminDashboard section="home" />} />
-          </Route>
-          
+          <Route path="/admin/*" element={<AdminDashboard />} />
+          <Route path="/superadmin/*" element={<SuperAdminDashboard />} />
           <Route path="/" element={<Navigate to={user.role === 'superadmin' ? '/superadmin' : '/admin'} />} />
         </>
       ) : (

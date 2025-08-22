@@ -1,9 +1,19 @@
-// src/components/superadmin/CompanyManagement.js
 import React, { useState, useEffect } from 'react';
+
+// Define the available features for admins
+const availableFeatures = [
+  { id: 'bus_management', name: 'Bus Management', description: 'Add, edit, and manage buses' },
+  { id: 'route_management', name: 'Route Management', description: 'Create and manage bus routes' },
+  { id: 'driver_management', name: 'Driver Management', description: 'Manage driver information' },
+  { id: 'schedule_management', name: 'Schedule Management', description: 'Create and manage bus schedules' },
+  { id: 'analytics', name: 'Analytics', description: 'View company performance analytics' },
+  { id: 'reports', name: 'Reports', description: 'Generate and view reports' }
+];
 
 function CompanyManagement({ companies, setCompanies }) {
   const [showForm, setShowForm] = useState(false);
   const [editingCompany, setEditingCompany] = useState(null);
+  const [showFeatures, setShowFeatures] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,44 +34,20 @@ function CompanyManagement({ companies, setCompanies }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Create a notification for the user
-    const notificationTitle = editingCompany ? 'Company Updated' : 'Company Registered';
-    const notificationMessage = editingCompany 
-      ? `${formData.name} has information has been updated successfully.`
-      : `${formData.name} company has been registered successfully and is now available for bus tracking.`;
-    
-    // Show browser notification
-    if ('Notification' in window) {
-      Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          new Notification(notificationTitle, {
-            body: notificationMessage,
-            icon: 'https://cdn-icons-png.flaticon.com/512/344/344439.png'
-          });
-        }
-      });
-    }
-    
-    // Update companies state
     if (editingCompany) {
       setCompanies(companies.map(company => 
         company.id === editingCompany.id ? { ...formData, id: editingCompany.id } : company
       ));
       setEditingCompany(null);
-         // Show success message
-      alert(`${formData.name} company information updated successfully!`);
     } else {
       const newCompany = {
         ...formData,
-        id: companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1
+        id: companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1,
+        // Initialize all features as enabled for new companies
+        enabledFeatures: availableFeatures.map(feature => feature.id)
       };
       setCompanies([...companies, newCompany]);
-      
-      // Show success message
-      alert(`${formData.name} company registered successfully! It is now available for bus tracking.`);
     }
-    
     resetForm();
   };
 
@@ -80,22 +66,32 @@ function CompanyManagement({ companies, setCompanies }) {
   };
 
   const handleDelete = (id) => {
-    const companyToDelete = companies.find(c => c.id === id);
-    if (window.confirm(`Are you sure you want to delete ${companyToDelete.name}? This will also remove all associated buses from tracking.`)) {
-      setCompanies(companies.filter(company => company.id !== id));
-      alert(`${companyToDelete.name} company deleted successfully!`);
-    }
+    setCompanies(companies.filter(company => company.id !== id));
   };
 
   const updateRegistrationStatus = (id, status) => {
-    const company = companies.find(c => c.id === id);
-    const newStatus = status === 'Completed' ? 'completed' : 'pending';
-    
     setCompanies(companies.map(company => 
       company.id === id ? { ...company, registrationStatus: status } : company
     ));
-    
-    alert(`${company.name} registration status updated to ${newStatus}!`);
+  };
+
+  const toggleFeature = (companyId, featureId) => {
+    setCompanies(prevCompanies => {
+      return prevCompanies.map(company => {
+        if (company.id === companyId) {
+          const enabledFeatures = company.enabledFeatures || [];
+          const isEnabled = enabledFeatures.includes(featureId);
+          
+          return {
+            ...company,
+            enabledFeatures: isEnabled
+              ? enabledFeatures.filter(id => id !== featureId)
+              : [...enabledFeatures, featureId]
+          };
+        }
+        return company;
+      });
+    });
   };
 
   const resetForm = () => {
@@ -110,6 +106,10 @@ function CompanyManagement({ companies, setCompanies }) {
     });
     setShowForm(false);
     setEditingCompany(null);
+  };
+
+  const openFeaturesModal = (company) => {
+    setShowFeatures(company);
   };
 
   return (
@@ -243,6 +243,7 @@ function CompanyManagement({ companies, setCompanies }) {
                 </td>
                 <td>
                   <button onClick={() => handleEdit(company)} className="edit-btn">Edit</button>
+                  <button onClick={() => openFeaturesModal(company)} className="features-btn">Features</button>
                   {company.registrationStatus === 'Pending' ? (
                     <button 
                       onClick={() => updateRegistrationStatus(company.id, 'Completed')} 
@@ -265,6 +266,59 @@ function CompanyManagement({ companies, setCompanies }) {
           </tbody>
         </table>
       </div>
+
+      {/* Features Modal */}
+      {showFeatures && (
+        <div className="modal-overlay">
+          <div className="modal-content features-modal">
+            <div className="modal-header">
+              <h2>Manage Features for {showFeatures.name}</h2>
+              <button className="close-modal" onClick={() => setShowFeatures(null)}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              <p>Enable or disable features for this company's admin account:</p>
+              
+              <div className="features-list">
+                {availableFeatures.map(feature => {
+                  const isEnabled = showFeatures.enabledFeatures?.includes(feature.id) || false;
+                  return (
+                    <div key={feature.id} className="feature-item">
+                      <div className="feature-info">
+                        <h3>{feature.name}</h3>
+                        <p>{feature.description}</p>
+                      </div>
+                      <div className="feature-toggle">
+                        <div className="toggle-switch">
+                          <input
+                            type="checkbox"
+                            id={`feature-${feature.id}`}
+                            checked={isEnabled}
+                            onChange={() => toggleFeature(showFeatures.id, feature.id)}
+                          />
+                          <label 
+                            htmlFor={`feature-${feature.id}`}
+                            className={`slider round ${isEnabled ? 'enabled' : 'disabled'}`}
+                          ></label>
+                        </div>
+                        <span className={`toggle-status ${isEnabled ? 'enabled' : 'disabled'}`}>
+                          {isEnabled ? 'Enabled' : 'Disabled'}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            
+            <div className="modal-footer">
+              <button className="save-btn" onClick={() => setShowFeatures(null)}>
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
