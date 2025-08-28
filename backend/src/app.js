@@ -19,20 +19,23 @@ app.use('/api/terminals', terminalRoutes);
 const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
-// Your original bus routes
+// Bus routes
 const busRoutes = require('./routes/busRoutes');
 app.use('/api/bus', busRoutes); 
 
+// Admin bus routes
 const adminBusRoutes = require('./routes/adminBusRoutes');
 app.use('/api/admin/buses', adminBusRoutes); 
 
+// Admin route routes
 const adminRouteRoutes = require("./routes/adminRouteRoutes");
 app.use("/api/admin/routes", adminRouteRoutes);
 
+// Bus hail routes
 const busHailRoutes = require('./routes/busHailRoutes');
 app.use('/api/bus-hails', busHailRoutes);
 
-// Cloned bus routes (kept separate to avoid conflict)
+// Separate "busesRoutes" (different from busRoutes)
 const busesRoutes = require('./routes/busesRoutes');  
 app.use('/api/buses', busesRoutes);                
 
