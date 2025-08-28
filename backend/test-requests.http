@@ -155,8 +155,8 @@ Content-Type: application/json
 Authorization: Bearer {{PASSENGER_TOKEN}}
 
 {
-  "terminalLocation": "Main Terminal",
-  "routeId": "{{ROUTE_ID}}" 
+  "startTerminalId": "b88eb0c8-8964-4864-a801-4f7a29ff0a3f",
+  "endTerminalId": "b88eb0c8-8964-4864-a801-4f7a29ff0a3f"
 }
 
 
