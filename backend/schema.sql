@@ -177,7 +177,9 @@ CREATE TABLE IF NOT EXISTS bus_hails (
     assigned_bus_id UUID REFERENCES buses(id),                         -- optional bus assignment
     status hail_status NOT NULL DEFAULT 'PENDING',                     -- hail status
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        CONSTRAINT check_different_terminals CHECK (start_terminal_id <> end_terminal_id)
 );
 
 -- Indexes for faster queries
