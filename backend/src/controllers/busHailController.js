@@ -5,8 +5,17 @@ const requestHail = async (req, res) => {
   const passengerId = req.user.id;
   const { startTerminalId, endTerminalId } = req.body;
 
+  console.log('Request received:', { passengerId, startTerminalId, endTerminalId }); // Debug log
+
+  // Validate required fields
   if (!startTerminalId || !endTerminalId) {
     return res.status(400).json({ message: 'Start and end terminals are required' });
+  }
+
+  // Prevent start and end terminals from being the same
+  if (startTerminalId === endTerminalId) {
+    console.log('Validation failed: Same terminals'); // Debug log
+    return res.status(400).json({ message: 'Start and end terminals cannot be the same' });
   }
 
   try {
@@ -33,11 +42,10 @@ const requestHail = async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error(err);
+    console.error('Error in requestHail:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 // Get all hail requests for passenger
 const getMyHails = async (req, res) => {
