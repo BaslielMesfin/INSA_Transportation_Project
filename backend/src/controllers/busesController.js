@@ -6,14 +6,20 @@ const GEBETA_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55bmFtZSI
 // Get all active buses
 const getAllBuses = async (req, res) => {
   try {
-    const result = await pool.query(`
+    let query = `
       SELECT b.id, b.plate_number, b.capacity, b.status,
              bl.latitude, bl.longitude, bl.recorded_at
       FROM buses b
       JOIN bus_locations bl ON b.id = bl.bus_id
       WHERE b.status = 'ACTIVE'
-    `);
+    `;
 
+    // If user is not SuperAdmin, filter by their company
+    if (req.user.role !== 'SUPER_ADMIN' && req.user.company_id) {
+      query += ` AND b.company_id = '${req.user.company_id}'`;
+    }
+
+    const result = await pool.query(query);
     return res.json({ buses: result.rows });
   } catch (err) {
     console.error(err);

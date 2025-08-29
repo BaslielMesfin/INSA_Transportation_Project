@@ -5,6 +5,9 @@ import BusManagement from './admin/BusManagement';
 import RouteManagement from './admin/RouteManagement';
 import DriverManagement from './admin/DriverManagement';
 import ScheduleManagement from './admin/ScheduleManagement';
+import PassengerManagement from './admin/PassengerManagement';
+import FeedbackManagement from './admin/FeedbackManagement';
+import NotificationManagement from './admin/NotificationManagement';
 
 const Breadcrumbs = ({ section }) => {
   const getBreadcrumbs = () => {
@@ -60,6 +63,12 @@ function AdminDashboard({ section = 'home' }) {
         return <DriverManagement />;
       case 'schedules':
         return <ScheduleManagement />;
+      case 'passengers':
+        return <PassengerManagement />;
+      case 'feedback':
+        return <FeedbackManagement />;
+      case 'notifications':
+        return <NotificationManagement />;
       default:
         return <DashboardHome />;
     }
@@ -112,6 +121,30 @@ function AdminDashboard({ section = 'home' }) {
                 Schedule Management
               </NavLink>
             </li>
+            <li>
+              <NavLink 
+                to="/admin/passengers" 
+                className={({ isActive }) => isActive ? "active" : ""}
+              >
+                Passenger Management
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/admin/feedback" 
+                className={({ isActive }) => isActive ? "active" : ""}
+              >
+                Feedback Management
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/admin/notifications" 
+                className={({ isActive }) => isActive ? "active" : ""}
+              >
+                Notifications
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -126,6 +159,9 @@ function AdminDashboard({ section = 'home' }) {
               {activeSection === 'routes' && 'Route Management'}
               {activeSection === 'drivers' && 'Driver Management'}
               {activeSection === 'schedules' && 'Schedule Management'}
+              {activeSection === 'passengers' && 'Passenger Management'}
+              {activeSection === 'feedback' && 'Feedback Management'}
+              {activeSection === 'notifications' && 'Notification Management'}
             </h1>
           </div>
           
@@ -135,6 +171,9 @@ function AdminDashboard({ section = 'home' }) {
             <NavLink to="/admin/routes">Routes</NavLink>
             <NavLink to="/admin/drivers">Drivers</NavLink>
             <NavLink to="/admin/schedules">Schedules</NavLink>
+            <NavLink to="/admin/passengers">Passengers</NavLink>
+            <NavLink to="/admin/feedback">Feedback</NavLink>
+            <NavLink to="/admin/notifications">Notifications</NavLink>
           </div>
         </div>
         
@@ -163,6 +202,14 @@ function DashboardHome() {
         <div className="card">
           <h3>Schedules Today</h3>
           <p>36</p>
+        </div>
+        <div className="card">
+          <h3>Passengers</h3>
+          <p>152</p>
+        </div>
+        <div className="card">
+          <h3>Pending Feedback</h3>
+          <p>8</p>
         </div>
       </div>
     </div>

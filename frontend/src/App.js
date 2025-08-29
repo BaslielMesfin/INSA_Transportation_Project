@@ -8,6 +8,7 @@ import Login from './components/auth/Login';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import './App.css'; 
 
 function App() {
   return (
@@ -40,6 +41,9 @@ function AppRoutes() {
             <Route path="routes" element={<AdminDashboard section="routes" />} />
             <Route path="drivers" element={<AdminDashboard section="drivers" />} />
             <Route path="schedules" element={<AdminDashboard section="schedules" />} />
+            <Route path="passengers" element={<AdminDashboard section="passengers" />} />
+            <Route path="feedback" element={<AdminDashboard section="feedback" />} />
+            <Route path="notifications" element={<AdminDashboard section="notifications" />} />
             <Route path="" element={<AdminDashboard section="home" />} />
           </Route>
           
