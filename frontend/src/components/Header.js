@@ -17,6 +17,13 @@ function Header() {
         <h1>Bus Transport Manager</h1>
       </div>
       
+      {user && (
+        <div className="user-info">
+          <span>Welcome, {user.name}</span>
+          <span className="role-badge">{user.role}</span>
+        </div>
+      )}
+
       <nav>
         {user && (
           <>
@@ -29,13 +36,6 @@ function Header() {
           </>
         )}
       </nav>
-      
-      {user && (
-        <div className="user-info">
-          <span>Welcome, {user.name}</span>
-          <span className="role-badge">{user.role}</span>
-        </div>
-      )}
     </header>
   );
 }

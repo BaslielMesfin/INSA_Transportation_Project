@@ -78,7 +78,8 @@ CREATE TABLE IF NOT EXISTS routes (
     distance_km DECIMAL(6,2),
     estimated_time INTERVAL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE;
 );
 
 CREATE TABLE IF NOT EXISTS bus_locations (
@@ -148,6 +149,7 @@ INSERT INTO bus_locations (bus_id, latitude, longitude, recorded_at) VALUES
 ((SELECT id FROM buses WHERE plate_number='BB-002'), 9.006500, 38.746000, NOW()),
 ((SELECT id FROM buses WHERE plate_number='GL-101'), 9.021000, 38.776000, NOW());
 
+<<<<<<< HEAD
 -- Create analytics table for SuperAdmin dashboard
 CREATE TABLE IF NOT EXISTS system_analytics (
     id SERIAL PRIMARY KEY,
@@ -166,3 +168,40 @@ CREATE TABLE IF NOT EXISTS system_analytics (
 -- Insert initial analytics data
 INSERT INTO system_analytics (total_companies, active_companies, pending_companies, total_buses, active_buses, total_drivers, active_drivers, total_passengers, total_revenue) VALUES
 (3, 2, 1, 3, 3, 3, 3, 0, 0);
+=======
+-- ========================
+-- New Tables from Stash
+-- ========================
+
+-- Add bus_feedback table
+CREATE TABLE IF NOT EXISTS bus_feedback (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    bus_id UUID NOT NULL REFERENCES buses(id) ON DELETE CASCADE,
+    passenger_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Bus hails table
+CREATE TABLE IF NOT EXISTS bus_hails (
+    
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    passenger_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,  -- links to passenger
+    start_terminal_id UUID NOT NULL REFERENCES terminals(id),          -- required start terminal
+    end_terminal_id UUID NOT NULL REFERENCES terminals(id),            -- required end terminal
+    assigned_bus_id UUID REFERENCES buses(id),                         -- optional bus assignment
+    status hail_status NOT NULL DEFAULT 'PENDING',                     -- hail status
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        CONSTRAINT check_different_terminals CHECK (start_terminal_id <> end_terminal_id)
+);
+
+-- Indexes for faster queries
+CREATE INDEX IF NOT EXISTS idx_bus_hails_passenger ON bus_hails (passenger_id, status);
+CREATE INDEX IF NOT EXISTS idx_bus_hails_start_end ON bus_hails (start_terminal_id, end_terminal_id, status);
+CREATE INDEX IF NOT EXISTS idx_bus_hails_assigned_bus ON bus_hails (assigned_bus_id, status);
+
+>>>>>>> e83906d9bb25a7ba71d3c28b30454a1c2d343e1c

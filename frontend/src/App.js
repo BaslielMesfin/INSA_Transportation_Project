@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
@@ -36,6 +35,7 @@ function AppRoutes() {
       
       {user ? (
         <>
+<<<<<<< HEAD
           <Route path="/admin" element={<AdminDashboard />}>
             <Route path="buses" element={<AdminDashboard section="buses" />} />
             <Route path="routes" element={<AdminDashboard section="routes" />} />
@@ -57,6 +57,10 @@ function AppRoutes() {
             <Route path="" element={<SuperAdminDashboard section="home" />} />
           </Route>
           
+=======
+          <Route path="/admin/*" element={<AdminDashboard />} />
+          <Route path="/superadmin/*" element={<SuperAdminDashboard />} />
+>>>>>>> e83906d9bb25a7ba71d3c28b30454a1c2d343e1c
           <Route path="/" element={<Navigate to={user.role === 'superadmin' ? '/superadmin' : '/admin'} />} />
         </>
       ) : (

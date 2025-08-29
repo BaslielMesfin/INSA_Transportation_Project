@@ -86,7 +86,11 @@ exports.loginUser = [
       const isMatch = await bcrypt.compare(password, foundUser.password_hash);
       if (!isMatch) return res.status(400).json({ message: 'Incorrect password' });
 
-      const payload = { id: foundUser.id, role: foundUser.role };
+      const payload = {
+        id: foundUser.id,
+        role: foundUser.role,
+        companyId: foundUser.company_id || null  // safe default
+      }
       const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
       const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRES_IN });
 

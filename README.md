@@ -67,7 +67,7 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 | Backend         | Node.js + Express           |
 | Database        | PostgreSQL                  |
 | Auth            | JWT Authentication          |
-| Maps & Tracking | Google Maps API / OpenStreetMap |
+| Maps & Tracking | Gebeta Maps API             |
 
 ---
 
