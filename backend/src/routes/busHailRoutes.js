@@ -4,10 +4,10 @@ const {
   requestHail,
   getMyHails,
   getPendingHails,
-  assignBus
+  assignBusToHailGroup
 } = require('../controllers/busHailController');
 
-const authMiddleware = require('../middleware/authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware'); 
 
 // Passenger: request a bus
 router.post('/', authMiddleware, requestHail);
@@ -19,6 +19,6 @@ router.get('/my', authMiddleware, getMyHails);
 router.get('/pending', authMiddleware, getPendingHails);
 
 // Admin: assign a bus to a hail
-router.patch('/:hailId/assign', authMiddleware, assignBus);
+router.patch('/assign', authMiddleware, assignBusToHailGroup);
 
 module.exports = router;
