@@ -180,3 +180,32 @@ Authorization: Bearer {{ADMIN_TOKEN}}
   "endTerminalId": "73f1fbe4-5942-4b40-9637-4c8e167e45ea",
   "busId": "6d575aa5-e24d-4af0-8589-9c5d3be3d7b5"
 }
+
+### Super  Admin:
+GET http://localhost:3000/api/superadmin/companies
+GET http://localhost:3000/api/superadmin/companies?page=2&limit=5
+GET http://localhost:3000/api/superadmin/companies?status=approved
+GET http://localhost:3000/api/superadmin/companies?status=pending
+
+###Get Company Details
+GET http://localhost:3000/api/superadmin/companies/{companyId}
+
+##Update company status 
+PUT http://localhost:3000/api/superadmin/companies/{companyId}/status
+Content-Type: application/json
+
+{
+  "status": "approved"  # or "rejected", "suspended", "pending"
+}
+
+ANALYTICS ENDPOINTS
+
+### Get Full System Analytics
+
+GET http://localhost:3000/api/superadmin/analytics
+Authorization: Bearer {{token}}
+
+### Get Basic Analytics (Simplified)
+
+GET http://localhost:3000/api/superadmin/analytics/basic
+Authorization: Bearer {{token}}
