@@ -53,3 +53,7 @@ const superadminRoutes = require('./routes/superadmin'); // make sure this file 
 app.use('/api/superadmin', superadminRoutes);
 
 module.exports = app;
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Server is running' });
+});
