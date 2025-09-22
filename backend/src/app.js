@@ -1,6 +1,14 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors'); 
 const app = express();
+
+// Enable CORS (allow all origins)
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Middleware to parse JSON
 app.use(express.json());
