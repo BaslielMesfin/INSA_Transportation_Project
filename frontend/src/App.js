@@ -35,7 +35,7 @@ function AppRoutes() {
       
       {user ? (
         <>
-<<<<<<< HEAD
+{/* <<<<<<< HEAD */}
           <Route path="/admin" element={<AdminDashboard />}>
             <Route path="buses" element={<AdminDashboard section="buses" />} />
             <Route path="routes" element={<AdminDashboard section="routes" />} />
