@@ -5,8 +5,17 @@ function RouteMapping({ companies }) {
   const [routeCompanies, setRouteCompanies] = useState({});
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [showAssignModal, setShowAssignModal] = useState(false);
+  const [showAddRouteModal, setShowAddRouteModal] = useState(false);
   const [assignForm, setAssignForm] = useState({
     routeId: '',
+    companies: []
+  });
+  const [newRouteForm, setNewRouteForm] = useState({
+    name: '',
+    origin: '',
+    destination: '',
+    distance: '',
+    duration: '',
     companies: []
   });
 
@@ -44,13 +53,27 @@ function RouteMapping({ companies }) {
     setShowAssignModal(true);
   };
 
-  const handleFormChange = (e) => {
+  const handleAddRouteClick = () => {
+    setNewRouteForm({
+      name: '',
+      origin: '',
+      destination: '',
+      distance: '',
+      duration: '',
+      companies: []
+    });
+    setShowAddRouteModal(true);
+  };
+
+  const handleFormChange = (e, formType = 'assign') => {
     const { name, value, checked } = e.target;
+    
+    const setForm = formType === 'assign' ? setAssignForm : setNewRouteForm;
     
     if (name === 'companies') {
       // Handle checkbox changes
       const companyId = parseInt(value);
-      setAssignForm(prev => {
+      setForm(prev => {
         if (checked) {
           return {
             ...prev,
@@ -65,7 +88,7 @@ function RouteMapping({ companies }) {
       });
     } else {
       // Handle other form changes
-      setAssignForm(prev => ({
+      setForm(prev => ({
         ...prev,
         [name]: value
       }));
@@ -83,6 +106,26 @@ function RouteMapping({ companies }) {
     setSelectedRoute(null);
   };
 
+  const handleSaveNewRoute = () => {
+    const newRouteId = routes.length > 0 ? Math.max(...routes.map(r => r.id)) + 1 : 1;
+    const newRoute = {
+      id: newRouteId,
+      name: newRouteForm.name,
+      origin: newRouteForm.origin,
+      destination: newRouteForm.destination,
+      distance: newRouteForm.distance,
+      duration: newRouteForm.duration
+    };
+
+    setRoutes([...routes, newRoute]);
+    setRouteCompanies(prev => ({
+      ...prev,
+      [newRouteId]: newRouteForm.companies
+    }));
+
+    setShowAddRouteModal(false);
+  };
+
   const getCompaniesForRoute = (routeId) => {
     const companyIds = routeCompanies[routeId] || [];
     return companies
@@ -94,6 +137,10 @@ function RouteMapping({ companies }) {
     <div className="route-mapping-container">
       <h1>Route - Company Mapping</h1>
       <p>View and manage which companies operate on each route</p>
+
+      <button className="add-route-btn" onClick={handleAddRouteClick}>
+        Add New Route
+      </button>
       
       <div className="route-mapping-content">
         <div className="routes-list">
@@ -169,29 +216,31 @@ function RouteMapping({ companies }) {
               <p>Select which companies should operate on this route:</p>
               
               <div className="companies-checkbox-list">
-                {companies
-                  .filter(company => company.registrationStatus === 'Completed' && company.status === 'Active')
-                  .map(company => (
-                    <div key={company.id} className="checkbox-item">
-                      <div className="checkbox-info">
-                        <h3>{company.name}</h3>
-                        <p>{company.email}</p>
-                      </div>
-                      <div className="checkbox-control">
-                        <input
-                          type="checkbox"
-                          id={`company-${company.id}`}
-                          name="companies"
-                          value={company.id}
-                          checked={assignForm.companies.includes(company.id)}
-                          onChange={handleFormChange}
-                        />
-                        <label htmlFor={`company-${company.id}`} className="checkbox-label">
-                          {assignForm.companies.includes(company.id) ? 'Assigned' : 'Not Assigned'}
-                        </label>
-                      </div>
+                {companies.map(company => (
+                  <div key={company.id} className="checkbox-item">
+                    <div className="checkbox-info">
+                      <h3>{company.name}</h3>
+                      <p>{company.email}</p>
                     </div>
-                  ))}
+                    <div className="checkbox-control">
+                      <input
+                        type="checkbox"
+                        id={`company-assign-${selectedRoute.id}-${company.id}`}
+                        name="companies"
+                        value={company.id}
+                        checked={assignForm.companies.includes(company.id)}
+                        onChange={(e) => handleFormChange(e, 'assign')}
+                      />
+                      <label 
+                        htmlFor={`company-assign-${selectedRoute.id}-${company.id}`} 
+                        className={`checkbox-label ${assignForm.companies.includes(company.id) ? 'checked' : 'unchecked'}`}
+                      ></label>
+                      <span className={`checkbox-status ${assignForm.companies.includes(company.id) ? 'checked' : 'unchecked'}`}>
+                        {assignForm.companies.includes(company.id) ? 'Assigned' : 'Not Assigned'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
             
@@ -201,6 +250,111 @@ function RouteMapping({ companies }) {
               </button>
               <button className="save-btn" onClick={handleSaveAssign}>
                 Save Assignments
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add New Route Modal */}
+      {showAddRouteModal && (
+        <div className="modal-overlay">
+          <div className="modal-content add-route-modal">
+            <div className="modal-header">
+              <h2>Add New Route</h2>
+              <button className="close-modal" onClick={() => setShowAddRouteModal(false)}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              <form>
+                <div className="form-group">
+                  <label>Route Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={newRouteForm.name}
+                    onChange={(e) => handleFormChange(e, 'new')}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Origin</label>
+                  <input
+                    type="text"
+                    name="origin"
+                    value={newRouteForm.origin}
+                    onChange={(e) => handleFormChange(e, 'new')}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Destination</label>
+                  <input
+                    type="text"
+                    name="destination"
+                    value={newRouteForm.destination}
+                    onChange={(e) => handleFormChange(e, 'new')}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Distance</label>
+                  <input
+                    type="text"
+                    name="distance"
+                    value={newRouteForm.distance}
+                    onChange={(e) => handleFormChange(e, 'new')}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Duration</label>
+                  <input
+                    type="text"
+                    name="duration"
+                    value={newRouteForm.duration}
+                    onChange={(e) => handleFormChange(e, 'new')}
+                    required
+                  />
+                </div>
+                <h3>Assign Companies</h3>
+                <p>Select which companies should operate on this route:</p>
+                <div className="companies-checkbox-list">
+                  {companies.map(company => (
+                    <div key={company.id} className="checkbox-item">
+                      <div className="checkbox-info">
+                        <h3>{company.name}</h3>
+                        <p>{company.email}</p>
+                      </div>
+                      <div className="checkbox-control">
+                        <input
+                          type="checkbox"
+                          id={`company-new-${company.id}`}
+                          name="companies"
+                          value={company.id}
+                          checked={newRouteForm.companies.includes(company.id)}
+                          onChange={(e) => handleFormChange(e, 'new')}
+                        />
+                        <label 
+                          htmlFor={`company-new-${company.id}`} 
+                          className={`checkbox-label ${newRouteForm.companies.includes(company.id) ? 'checked' : 'unchecked'}`}
+                        ></label>
+                        <span className={`checkbox-status ${newRouteForm.companies.includes(company.id) ? 'checked' : 'unchecked'}`}>
+                          {newRouteForm.companies.includes(company.id) ? 'Assigned' : 'Not Assigned'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </form>
+            </div>
+            
+            <div className="modal-footer">
+              <button className="cancel-btn" onClick={() => setShowAddRouteModal(false)}>
+                Cancel
+              </button>
+              <button className="save-btn" onClick={handleSaveNewRoute}>
+                Save New Route
               </button>
             </div>
           </div>

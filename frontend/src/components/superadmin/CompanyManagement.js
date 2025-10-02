@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // Define the available features for admins
 const availableFeatures = [
@@ -10,7 +10,7 @@ const availableFeatures = [
   { id: 'reports', name: 'Reports', description: 'Generate and view reports' }
 ];
 
-function CompanyManagement({ companies, setCompanies }) {
+function CompanyManagement({ companies, setCompanies, buses }) {
   const [showForm, setShowForm] = useState(false);
   const [editingCompany, setEditingCompany] = useState(null);
   const [showFeatures, setShowFeatures] = useState(null);
@@ -43,7 +43,6 @@ function CompanyManagement({ companies, setCompanies }) {
       const newCompany = {
         ...formData,
         id: companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1,
-        // Initialize all features as enabled for new companies
         enabledFeatures: availableFeatures.map(feature => feature.id)
       };
       setCompanies([...companies, newCompany]);
@@ -110,6 +109,10 @@ function CompanyManagement({ companies, setCompanies }) {
 
   const openFeaturesModal = (company) => {
     setShowFeatures(company);
+  };
+
+  const getBusCount = (companyName) => {
+    return buses.filter(bus => bus.company === companyName).length;
   };
 
   return (
@@ -220,6 +223,7 @@ function CompanyManagement({ companies, setCompanies }) {
               <th>Registration Date</th>
               <th>Registration Status</th>
               <th>Account Status</th>
+              <th>Number of Buses</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -241,6 +245,7 @@ function CompanyManagement({ companies, setCompanies }) {
                     {company.status}
                   </span>
                 </td>
+                <td>{getBusCount(company.name)}</td>
                 <td>
                   <button onClick={() => handleEdit(company)} className="edit-btn">Edit</button>
                   <button onClick={() => openFeaturesModal(company)} className="features-btn">Features</button>
@@ -267,7 +272,6 @@ function CompanyManagement({ companies, setCompanies }) {
         </table>
       </div>
 
-      {/* Features Modal */}
       {showFeatures && (
         <div className="modal-overlay">
           <div className="modal-content features-modal">
@@ -292,12 +296,12 @@ function CompanyManagement({ companies, setCompanies }) {
                         <div className="toggle-switch">
                           <input
                             type="checkbox"
-                            id={`feature-${feature.id}`}
+                            id={`feature-${showFeatures.id}-${feature.id}`}
                             checked={isEnabled}
                             onChange={() => toggleFeature(showFeatures.id, feature.id)}
                           />
                           <label 
-                            htmlFor={`feature-${feature.id}`}
+                            htmlFor={`feature-${showFeatures.id}-${feature.id}`}
                             className={`slider round ${isEnabled ? 'enabled' : 'disabled'}`}
                           ></label>
                         </div>
@@ -324,3 +328,4 @@ function CompanyManagement({ companies, setCompanies }) {
 }
 
 export default CompanyManagement;
+

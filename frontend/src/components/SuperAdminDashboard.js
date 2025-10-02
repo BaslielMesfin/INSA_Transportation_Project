@@ -46,8 +46,9 @@ function SuperAdminDashboard({ section = 'home' }) {
   const [activeSection, setActiveSection] = useState(section);
   const [companies, setCompanies] = useState([]);
   const [buses, setBuses] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  // Initialize companies data
+  // Initialize companies, buses, and users data
   useEffect(() => {
     // In a real app, this would be an API call
     const initialCompanies = [
@@ -57,7 +58,6 @@ function SuperAdminDashboard({ section = 'home' }) {
     ];
     setCompanies(initialCompanies);
     
-    // Initialize buses data
     const initialBuses = [
       {
         id: 1,
@@ -154,10 +154,18 @@ function SuperAdminDashboard({ section = 'home' }) {
       },
     ];
     setBuses(initialBuses);
+
+    const initialUsers = [
+      { id: 1, name: 'Super Admin User', email: 'superadmin1@system.com', role: 'SuperAdmin', company: 'System', status: 'Active' },
+      { id: 2, name: 'System Manager', email: 'manager@system.com', role: 'SuperAdmin', company: 'System', status: 'Active' },
+      { id: 3, name: 'Support Admin', email: 'support@system.com', role: 'SuperAdmin', company: 'System', status: 'Inactive' },
+      { id: 4, name: 'Main SuperAdmin', email: 'superadmin@bus.com', role: 'SuperAdmin', company: 'System', status: 'Active' },
+    ];
+    setUsers(initialUsers);
   }, []);
 
   // Update active section when URL changes
-  React.useEffect(() => {
+  useEffect(() => {
     const pathSegments = location.pathname.split('/');
     const currentSection = pathSegments[pathSegments.length - 1] || 'home';
     setActiveSection(currentSection);
@@ -166,9 +174,9 @@ function SuperAdminDashboard({ section = 'home' }) {
   const renderContent = () => {
     switch (activeSection) {
       case 'companies':
-        return <CompanyManagement companies={companies} setCompanies={setCompanies} />;
+        return <CompanyManagement companies={companies} setCompanies={setCompanies} buses={buses} />;
       case 'users':
-        return <UserManagement />;
+        return <UserManagement users={users} setUsers={setUsers} companies={companies} />;
       case 'registration-process':
         return <RegistrationProcess />;
       case 'bus-tracking':
@@ -180,7 +188,7 @@ function SuperAdminDashboard({ section = 'home' }) {
       case 'settings':
         return <SystemSettings />;
       default:
-        return <DashboardHome />;
+        return <DashboardHome companies={companies} users={users} />;
     }
   };
 
@@ -292,17 +300,17 @@ function SuperAdminDashboard({ section = 'home' }) {
   );
 }
 
-function DashboardHome() {
+function DashboardHome({ companies, users }) {
   return (
     <div>
       <div className="dashboard-cards">
         <div className="card">
           <h3>Registered Companies</h3>
-          <p>8</p>
+          <p>{companies.length}</p>
         </div>
         <div className="card">
           <h3>Pending Registrations</h3>
-          <p>3</p>
+          <p>{companies.filter(company => company.registrationStatus === 'Pending').length}</p>
         </div>
         <div className="card">
           <h3>Total Buses</h3>
@@ -310,7 +318,7 @@ function DashboardHome() {
         </div>
         <div className="card">
           <h3>Active SuperAdmins</h3>
-          <p>5</p>
+          <p>{users.filter(user => user.status === 'Active' && user.role === 'SuperAdmin').length}</p>
         </div>
         <div className="card">
           <h3>System Alerts</h3>
@@ -343,3 +351,4 @@ function DashboardHome() {
 }
 
 export default SuperAdminDashboard;
+
