@@ -126,6 +126,16 @@ CREATE TABLE bus_feedback (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE driver_feedback (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    driver_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    passenger_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 -- ========================
 -- Bus Hails Table
 -- ========================

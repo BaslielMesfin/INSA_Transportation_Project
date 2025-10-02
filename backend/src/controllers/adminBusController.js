@@ -98,40 +98,46 @@ const assignDriver = async (req, res) => {
   }
 };
 
-const reviewFeedback = async (req, res) => {
-  const { busId } = req.params;
-  const companyId = req.user.companyId;
+
+const reviewDriverFeedback = async (req, res) => {
+  const { driverId } = req.params;
+  const companyId = req.user.companyId; // Admin's company
 
   try {
-    const busCheck = await pool.query(
-      'SELECT id FROM buses WHERE id = $1 AND company_id = $2',
-      [busId, companyId]
+    // Check that the driver belongs to the admin's company
+    const driverCheck = await pool.query(
+      'SELECT id FROM users WHERE id = $1 AND company_id = $2 AND role = $3',
+      [driverId, companyId, 'DRIVER']
     );
-    if (busCheck.rows.length === 0)
-      return res.status(404).json({ message: 'Bus not found or unauthorized' });
 
+    if (driverCheck.rows.length === 0)
+      return res.status(404).json({ message: 'Driver not found or unauthorized' });
+
+    // Fetch feedback for this driver
     const feedbackResult = await pool.query(
       `SELECT passenger_id, rating, comment, created_at
-       FROM bus_feedback
-       WHERE bus_id = $1
+       FROM driver_feedback
+       WHERE driver_id = $1
        ORDER BY created_at DESC`,
-      [busId]
+      [driverId]
     );
 
+    // Calculate average rating
     const avgResult = await pool.query(
       `SELECT AVG(rating)::numeric(2,1) AS average_rating
-       FROM bus_feedback
-       WHERE bus_id = $1`,
-      [busId]
+       FROM driver_feedback
+       WHERE driver_id = $1`,
+      [driverId]
     );
 
     res.json({
-      busId,
+      driverId,
       averageRating: avgResult.rows[0].average_rating || 0,
       feedback: feedbackResult.rows,
     });
+
   } catch (err) {
-    console.error('Error reviewing feedback:', err);
+    console.error('Error reviewing driver feedback:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -174,4 +180,4 @@ const updateBus = async (req, res) => {
     }
   };
 
-module.exports = { addBus, removeBus, assignDriver, reviewFeedback, updateBus };
+module.exports = { addBus, removeBus, assignDriver, reviewDriverFeedback, updateBus };

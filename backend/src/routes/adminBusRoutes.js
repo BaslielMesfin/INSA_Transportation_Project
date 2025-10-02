@@ -5,7 +5,7 @@ const {
   addBus,
   removeBus,
   assignDriver,
-  reviewFeedback,
+  reviewDriverFeedback,
   updateBus,
 } = require('../controllers/adminBusController');
 
@@ -26,7 +26,8 @@ router.use(companyAdminOnly);
 router.post("/", addBus);
 router.delete("/:busId", removeBus);
 router.patch("/:busId/assign-driver", assignDriver);
-router.get("/:busId/feedback", reviewFeedback);
+
+router.get('/drivers/:driverId/feedback', reviewDriverFeedback);
 router.patch("/:busId", updateBus);
 
 module.exports = router;

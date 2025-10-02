@@ -42,8 +42,8 @@ GET http://localhost:3000/api/bus/6d575aa5-e24d-4af0-8589-9c5d3be3d7b5/info
 Authorization: Bearer {{TOKEN}}
 
 
-### Submit feedback
-POST http://localhost:3000/api/bus/6d575aa5-e24d-4af0-8589-9c5d3be3d7b5/feedback
+### Submit feedback for a driver
+POST  http://localhost:3000/api/drivers/19/feedback
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
@@ -54,7 +54,7 @@ Authorization: Bearer {{TOKEN}}
 
 
 ### Get feedback + average rating
-GET http://localhost:3000/api/bus/6d575aa5-e24d-4af0-8589-9c5d3be3d7b5/feedback
+GET http://localhost:3000/api/drivers/19/feedback
 Authorization: Bearer {{TOKEN}}
 
 

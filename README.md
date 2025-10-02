@@ -38,6 +38,7 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 4. Bus capacity display  
 5. Driver and vehicle info  
 6. Feedback and rating system  
+7. Create a hail
 
 ### Admin Dashboard
 
@@ -49,7 +50,7 @@ Our solution offers **tracking, route optimization, bus capacity monitoring, and
 #### Admin (Bus Company Manager)
 - Add/remove buses  
 - Assign drivers  
-- Monitor real-time bus operations  
+- Monitor real-time bus operations (Active, InActive) 
 - Review passenger feedback  
 
 #### Driver
