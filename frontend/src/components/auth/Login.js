@@ -134,6 +134,14 @@ function Login() {
           <p>After physical registration, a superadmin will create your admin account.</p>
           <p>You will receive your login credentials via email once your account is created.</p>
         </div>
+        <div className="registration-info">
+          <h3>Demo Superadmin Credentials</h3>
+          <p>Email: superadmin@bus.com</p>
+          <p>Password: superadmin</p>
+          <h3>Demo Admin Credentials</h3>
+          <p>Email: admin@bus.com</p>
+          <p>Password: admin</p>
+        </div>
       </div>
     </div>
   );
