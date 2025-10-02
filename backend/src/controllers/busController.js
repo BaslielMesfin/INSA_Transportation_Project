@@ -68,6 +68,41 @@ const submitFeedback = async (req, res) => {
     }
 };
 
+// Submit driver feedback
+const submitDriverFeedback = async (req, res) => {
+  const { driverId } = req.params;
+  const passengerId = req.user.id; // from JWT
+  const { rating, comment } = req.body;
+
+  if (!rating || rating < 1 || rating > 5) {
+    return res.status(400).json({ message: 'Invalid rating' });
+  }
+
+  try {
+    // Make sure passenger is actually a PASSENGER
+    const passengerCheck = await pool.query(
+      'SELECT id FROM users WHERE id = $1 AND role = $2',
+      [passengerId, 'PASSENGER']
+    );
+
+    if (passengerCheck.rows.length === 0) {
+      return res.status(403).json({ message: 'User not authorized' });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO driver_feedback (driver_id, passenger_id, rating, comment)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [driverId, passengerId, rating, comment || null]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
   
 
 // Get feedback + average rating
@@ -101,4 +136,36 @@ const getFeedback = async (req, res) => {
   }
 };
 
-module.exports = { getBusInfo, submitFeedback, getFeedback };
+// Get feedback for a driver
+const getDriverFeedback = async (req, res) => {
+  const { driverId } = req.params;
+
+  try {
+    const feedbackResult = await pool.query(
+      `SELECT passenger_id, rating, comment, created_at
+       FROM driver_feedback
+       WHERE driver_id = $1
+       ORDER BY created_at DESC`,
+      [driverId]
+    );
+
+    const avgResult = await pool.query(
+      `SELECT AVG(rating)::numeric(2,1) AS average_rating
+       FROM driver_feedback
+       WHERE driver_id = $1`,
+      [driverId]
+    );
+
+    res.json({
+      driverId,
+      averageRating: avgResult.rows[0].average_rating || 0,
+      feedback: feedbackResult.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+module.exports = { getBusInfo, submitFeedback, getFeedback, submitDriverFeedback, getDriverFeedback };

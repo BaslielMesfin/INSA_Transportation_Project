@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors'); 
 const app = express();
 
+
 // Enable CORS (allow all origins)
 app.use(cors({
   origin: '*',
@@ -42,6 +43,10 @@ app.use("/api/admin/routes", adminRouteRoutes);
 // Bus hail routes
 const busHailRoutes = require('./routes/busHailRoutes');
 app.use('/api/bus-hails', busHailRoutes);
+
+const driversRouter = require("./routes/driverRoutes");
+app.use("/api/drivers", driversRouter);
+
 
 // Separate "busesRoutes" (different from busRoutes)
 const busesRoutes = require('./routes/busesRoutes');  

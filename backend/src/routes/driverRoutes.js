@@ -1,7 +1,11 @@
 const express = require("express");
-const pool = require('../config/db.js');
-
 const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
+const pool = require("../config/db.js");
+const {
+  submitDriverFeedback,
+  getDriverFeedback
+} = require("../controllers/busController"); // your controller already has these
 
 // ✅ Get driver profile by ID
 router.get("/:id", async (req, res) => {
@@ -23,5 +27,11 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+// ✅ Submit feedback for a driver
+router.post("/:driverId/feedback", authMiddleware, submitDriverFeedback);
+
+// ✅ Get feedback + average rating for a driver
+router.get("/:driverId/feedback", authMiddleware, getDriverFeedback);
 
 module.exports = router;
