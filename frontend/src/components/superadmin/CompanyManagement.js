@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 
-// Define the available features for admins
+// Define country codes
+const countryCodes = [
+  { code: '+1', country: 'United States' },
+  { code: '+44', country: 'United Kingdom' },
+  { code: '+91', country: 'India' },
+  { code: '+254', country: 'Kenya' },
+];
+
+// Define available features
 const availableFeatures = [
   { id: 'bus_management', name: 'Bus Management', description: 'Add, edit, and manage buses' },
   { id: 'route_management', name: 'Route Management', description: 'Create and manage bus routes' },
@@ -10,14 +18,23 @@ const availableFeatures = [
   { id: 'reports', name: 'Reports', description: 'Generate and view reports' }
 ];
 
+// Generate OTP
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString(); // Generates a 6-digit OTP
+};
+
 function CompanyManagement({ companies, setCompanies, buses }) {
   const [showForm, setShowForm] = useState(false);
-  const [editingCompany, setEditingCompany] = useState(null);
   const [showFeatures, setShowFeatures] = useState(null);
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [pendingCompany, setPendingCompany] = useState(null);
+  const [generatedOtp, setGeneratedOtp] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
+    countryCode: '+254', // Default to Kenya based on your timezone (EAT)
     address: '',
     registrationStatus: 'Pending',
     registrationDate: new Date().toISOString().split('T')[0],
@@ -26,6 +43,9 @@ function CompanyManagement({ companies, setCompanies, buses }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'phone') {
+      if (!/^\d*$/.test(value)) return; // Allow only digits
+    }
     setFormData({
       ...formData,
       [name]: value
@@ -34,34 +54,62 @@ function CompanyManagement({ companies, setCompanies, buses }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (editingCompany) {
-      setCompanies(companies.map(company => 
-        company.id === editingCompany.id ? { ...formData, id: editingCompany.id } : company
-      ));
-      setEditingCompany(null);
-    } else {
-      const newCompany = {
-        ...formData,
-        id: companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1,
-        enabledFeatures: availableFeatures.map(feature => feature.id)
-      };
-      setCompanies([...companies, newCompany]);
-    }
-    resetForm();
+    const fullPhone = `${formData.countryCode}${formData.phone}`;
+    const companyData = {
+      ...formData,
+      phone: fullPhone
+    };
+
+    // New registration: Generate OTP and show verification form
+    const otp = generateOTP();
+    setGeneratedOtp(otp);
+    setPendingCompany(companyData);
+    
+    // Simulate sending OTP (replace with backend API call later)
+    console.log(`Simulated email sent to ${formData.email} with OTP: ${otp}`);
+    alert(`Simulated email sent to ${formData.email}. OTP: ${otp} (Check console for OTP)`);
+    
+    // Show OTP verification form
+    setShowOtpForm(true);
   };
 
-  const handleEdit = (company) => {
-    setEditingCompany(company);
+  const handleOtpSubmit = (e) => {
+    e.preventDefault();
+    if (otp === generatedOtp) {
+      // OTP is correct, complete registration
+      const newCompany = {
+        ...pendingCompany,
+        id: companies.length > 0 ? Math.max(...companies.map(c => c.id)) + 1 : 1,
+        enabledFeatures: availableFeatures.map(feature => feature.id),
+      };
+      setCompanies([...companies, newCompany]);
+      alert('OTP verified! Company registered successfully.');
+      setShowOtpForm(false);
+      setOtp('');
+      setPendingCompany(null);
+      setGeneratedOtp('');
+      resetForm();
+    } else {
+      alert('Invalid OTP. Please try again.');
+    }
+  };
+
+  const resetForm = () => {
     setFormData({
-      name: company.name,
-      email: company.email,
-      phone: company.phone,
-      address: company.address,
-      registrationStatus: company.registrationStatus,
-      registrationDate: company.registrationDate,
-      status: company.status
+      name: '',
+      email: '',
+      phone: '',
+      countryCode: '+254',
+      address: '',
+      registrationStatus: 'Pending',
+      registrationDate: new Date().toISOString().split('T')[0],
+      status: 'Active'
     });
-    setShowForm(true);
+    setShowForm(false);
+    setShowOtpForm(false);
+    setOtp('');
+    setPendingCompany(null);
+    setGeneratedOtp('');
   };
 
   const handleDelete = (id) => {
@@ -80,7 +128,6 @@ function CompanyManagement({ companies, setCompanies, buses }) {
         if (company.id === companyId) {
           const enabledFeatures = company.enabledFeatures || [];
           const isEnabled = enabledFeatures.includes(featureId);
-          
           return {
             ...company,
             enabledFeatures: isEnabled
@@ -93,20 +140,6 @@ function CompanyManagement({ companies, setCompanies, buses }) {
     });
   };
 
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      address: '',
-      registrationStatus: 'Pending',
-      registrationDate: new Date().toISOString().split('T')[0],
-      status: 'Active'
-    });
-    setShowForm(false);
-    setEditingCompany(null);
-  };
-
   const openFeaturesModal = (company) => {
     setShowFeatures(company);
   };
@@ -115,14 +148,31 @@ function CompanyManagement({ companies, setCompanies, buses }) {
     return buses.filter(bus => bus.company === companyName).length;
   };
 
+  // Define common button styles as a constant
+  const buttonStyles = {
+    padding: '8px 12px',
+    width: '120px',
+    textAlign: 'center',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    color: 'white',
+    backgroundColor: '#163162', // Light blue color
+    transition: 'background-color 0.2s'
+  };
+
+  // Define hover styles (handled via CSS in a stylesheet or pseudo-classes)
+  // Note: Inline styles can't handle :hover, so you may need to add CSS for hover effects or use a library
+
   return (
     <div>
       <h1>Company Management</h1>
       <p>Register companies that have completed physical registration at headquarters</p>
       
-      {showForm ? (
+      {showForm && !showOtpForm ? (
         <div className="form-container">
-          <h2>{editingCompany ? 'Edit Company' : 'Register New Company'}</h2>
+          <h2>Register New Company</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Company Name</label>
@@ -144,15 +194,30 @@ function CompanyManagement({ companies, setCompanies, buses }) {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="form-group phone-group">
               <label>Phone</label>
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                required
-              />
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <select
+                  name="countryCode"
+                  value={formData.countryCode}
+                  onChange={handleInputChange}
+                  style={{ width: '100px' }}
+                >
+                  {countryCodes.map(({ code, country }) => (
+                    <option key={code} value={code}>
+                      {code} ({country})
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Enter phone number"
+                />
+              </div>
             </div>
             <div className="form-group">
               <label>Address</label>
@@ -198,8 +263,30 @@ function CompanyManagement({ companies, setCompanies, buses }) {
             </div>
             <div className="form-actions">
               <button type="submit" className="save-btn">
-                {editingCompany ? 'Update Company' : 'Register Company'}
+                Register Company
               </button>
+              <button type="button" onClick={resetForm} className="cancel-btn">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      ) : showOtpForm ? (
+        <div className="form-container">
+          <h2>Verify OTP</h2>
+          <form onSubmit={handleOtpSubmit}>
+            <div className="form-group">
+              <label>Enter OTP</label>
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+                placeholder="Enter 6-digit OTP"
+              />
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="save-btn">Verify OTP</button>
               <button type="button" onClick={resetForm} className="cancel-btn">
                 Cancel
               </button>
@@ -247,24 +334,43 @@ function CompanyManagement({ companies, setCompanies, buses }) {
                 </td>
                 <td>{getBusCount(company.name)}</td>
                 <td>
-                  <button onClick={() => handleEdit(company)} className="edit-btn">Edit</button>
-                  <button onClick={() => openFeaturesModal(company)} className="features-btn">Features</button>
-                  {company.registrationStatus === 'Pending' ? (
-                    <button 
-                      onClick={() => updateRegistrationStatus(company.id, 'Completed')} 
-                      className="status-btn"
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <button
+                      onClick={() => openFeaturesModal(company)}
+                      style={buttonStyles}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#ADD8E6'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#163162'} 
                     >
-                      Mark Completed
+                      Features
                     </button>
-                  ) : (
-                    <button 
-                      onClick={() => updateRegistrationStatus(company.id, 'Pending')} 
-                      className="status-btn"
+                    {company.registrationStatus === 'Pending' ? (
+                      <button
+                        onClick={() => updateRegistrationStatus(company.id, 'Completed')}
+                        style={buttonStyles}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#ADD8E6'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#163162'}
+                      >
+                        Mark Completed
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => updateRegistrationStatus(company.id, 'Pending')}
+                        style={buttonStyles}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#ADD8E6'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#163162'}
+                      >
+                        Mark Pending
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDelete(company.id)}
+                      style={buttonStyles}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = 'red'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#163162'}
                     >
-                      Mark Pending
+                      Delete
                     </button>
-                  )}
-                  <button onClick={() => handleDelete(company.id)} className="delete-btn">Delete</button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -279,10 +385,8 @@ function CompanyManagement({ companies, setCompanies, buses }) {
               <h2>Manage Features for {showFeatures.name}</h2>
               <button className="close-modal" onClick={() => setShowFeatures(null)}>×</button>
             </div>
-            
             <div className="modal-body">
               <p>Enable or disable features for this company's admin account:</p>
-              
               <div className="features-list">
                 {availableFeatures.map(feature => {
                   const isEnabled = showFeatures.enabledFeatures?.includes(feature.id) || false;
@@ -314,7 +418,6 @@ function CompanyManagement({ companies, setCompanies, buses }) {
                 })}
               </div>
             </div>
-            
             <div className="modal-footer">
               <button className="save-btn" onClick={() => setShowFeatures(null)}>
                 Done
@@ -328,4 +431,3 @@ function CompanyManagement({ companies, setCompanies, buses }) {
 }
 
 export default CompanyManagement;
-
